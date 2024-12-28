@@ -5,11 +5,10 @@
 \usepackage{colortbl}
 \usepackage{colortbl}
 \usepackage{amssymb}
-
+\usepackage{tikz}
 \DeclareMathOperator*{\argmax}{arg\,max}
-
+\usetikzlibrary{arrows.meta, positioning}
 \usepackage{fancyhdr}
-\usepackage{xcolor}
 \usepackage{xcolor}
 
 \definecolor{mycolumncolor}{rgb}{0.9, 0.9, 0.9}
@@ -23,13 +22,10 @@
 \usepackage[T2A]{fontenc}
 \usepackage[russian]{babel}
 \usepackage{colortbl}
-\usepackage{xcolor}
 \usetikzlibrary{intersections}
 \usepgfplotslibrary{fillbetween}
 \pgfplotsset{compat=1.18}
-\usepackage{graphicx}
-\usepackage{diagbox}
-\usepackage{xcolor}  
+\usepackage{graphicx} 
 \usepackage{listings} 
 \usepackage{float}
 \usepackage{caption}
@@ -41,6 +37,15 @@
     citecolor=blue,      
     filecolor=blue,        
     pdfborder={0 0 0}     
+}
+
+\tikzset{
+mybox/.style={
+        rectangle, draw, rounded corners, align=center, minimum height=1cm, minimum width=2.5cm
+    },
+myarrow/.style={
+-{Latex[length=3mm, width=2mm]}, thick
+}
 }
 
 \pagestyle{fancy}
@@ -1747,7 +1752,7 @@ Time:0.01
 \]
 
 \section{Задание №7}
-
+\subsection{Условие}
 Придумать задачу коммивояжера размерности $10 \times 10$. Значения в матрице расстояний должны быть любыми целыми числами от 1 до 100.
 Решить задачу методом ветвей и границ. Полный перебор не использовать.
 После выполнения задания добавить в отчёт граф решения, добавить решение задачи с помощью программных средств.
@@ -2489,6 +2494,57 @@ Time:0.01
 \]
 
 Длина маршрута равна $F(M_k) = 258$
+
+\begin{tikzpicture}[node distance=1.5cm and 2.5cm]
+
+    % Узлы
+    \node[mybox] (start) {1\\Начало};
+    \node[mybox, right=of start] (start1) {(6*, 10*)\\$H=202$};
+    \node[mybox, below=of start] (a) {(6, 10)\\$H=202$};
+    \node[mybox, right=of a] (a1) {(2*, 7*)\\$H=217$};
+    \node[mybox, below=of a] (b) {(2, 7)\\$H=217$};
+    \node[mybox, right=of b] (b1) {(1*, 9*)\\$H=231$};
+    \node[mybox, below=of b] (c) {(1, 9)\\$H=231$};
+    \node[mybox, right=of c] (c1) {(8*, 1*)\\$H=239$};
+    \node[mybox, below=of c] (d) {(8, 1)\\$H=231$};
+    \node[mybox, right=of d] (d1) {(7*, 3*)\\$H=250$};
+    \node[mybox, below=of d] (e) {(7, 3)\\$H=236$};
+    \node[mybox, right=of e] (e1) {(3*, 8*)\\$H=249$};
+    \node[mybox, below=of e] (f) {(3, 8)\\$H=239$};
+    \node[mybox, right=of f] (f1) {(9*, 5*)\\$H=259$};
+    \node[mybox, below=of f] (g) {(9, 5)\\$H=254$};
+    \node[mybox, right=of g] (g1) {(4*, 6*)\\$H=260$};
+    \node[mybox, below=of g] (h) {(4, 16)\\$H=258$};
+    \node[mybox, right=of h] (h1) {(5*, 4*)\\$H=258$};
+    \node[mybox, below=of h] (i) {(5, 4)\\$H=258$};
+    \node[mybox, right=of i] (i1) {(10*, 2*)\\$H=258$};
+    \node[mybox, below=of i] (j) {(10, 2)\\$H=258$};
+
+    % Стрелки
+    \draw[myarrow] (start) -- (a);
+    \draw[myarrow] (a) -- (b);
+    \draw[myarrow] (b) -- (c);
+    \draw[myarrow] (c) -- (d);
+    \draw[myarrow] (d) -- (e);
+    \draw[myarrow] (e) -- (f);
+    \draw[myarrow] (f) -- (g);
+    \draw[myarrow] (g) -- (h);
+    \draw[myarrow] (h) -- (i);
+    \draw[myarrow] (i) -- (j);
+    \draw[myarrow] (start) -- (start1);
+    \draw[myarrow] (a) -- (a1);
+    \draw[myarrow] (b) -- (b1);
+    \draw[myarrow] (c) -- (c1);
+    \draw[myarrow] (d) -- (d1);
+    \draw[myarrow] (e) -- (e1);
+    \draw[myarrow] (f) -- (f1);
+    \draw[myarrow] (g) -- (g1);
+    \draw[myarrow] (h) -- (h1);
+    \draw[myarrow] (i) -- (i1);
+
+
+
+\end{tikzpicture}
 
 Используя код на Python:
 
@@ -3433,9 +3489,7 @@ $n = 6$ - количество предприятий.\\
 
 \newpage
 \section{Задание №10}
-\section*{Задача о рюкзаке}
-
-\subsection*{Условие задачи}
+\subsection{Условие}
 
 Имеется рюкзак грузоподъемностью $W$. \\
 $P_i$ -- вес одного предмета $i$-ого типа. \\
@@ -3665,11 +3719,13 @@ C -= P[i-1] * X[i][C]
 }
 fmt.Printf("), максимальная ценность %d.\n", W[n][S])
 }
-\end{verbatim}\\
+\end{verbatim}
+
 Получаем такие же значения:
 \begin{verbatim}
 Максимальная стоимость груза W_6(20) равна 200 денежным единицам.
 Итоговое решение: X = (0, 0, 0, 0, 0, 4), максимальная ценность 200.
-\end{verbatim}\\
+\end{verbatim}
+
 \text{Результаты совапали.}
 \end{document}
